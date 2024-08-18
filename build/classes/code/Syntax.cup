@@ -1,0 +1,29 @@
+package code;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+
+    public void syntax_error(Symbol s) {
+        this.s = s;
+    }
+
+    public Symbol getS() {
+        return this.s;
+    }
+:};
+
+terminal STRING, INT, IF, ELSE, WHILE, FOR, DO, Equal, Add, Subtract, 
+    Multiplication, Division, Modulo, OpenParenthesis, CloseParenthesis, 
+    OpenBrace, CloseBrace, OpenBracket, CloseBracket, Public, Class, Static, 
+    Void, Args, Main, Semicolon, Identifier, Number, ERROR;
+non terminal START, SENTENCE, DECLARATION;
+
+start with START;
+
+START ::= Public Class Identifier OpenBrace Public Static Void Main OpenParenthesis STRING OpenBracket CloseBracket Args CloseParenthesis OpenBrace SENTENCE CloseBrace CloseBrace
+;
+SENTENCE ::= STRING Identifier Semicolon | INT Identifier Equal Number Semicolon
+;
