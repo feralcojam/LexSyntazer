@@ -9,6 +9,7 @@ import java_cup.runtime.Symbol;
 %char
 L=[a-zA-Z_]+
 D=[0-9]+
+SL = \"([^\\\"]|\\\\[\"ntbrf])*\"
 blank_space=[ ,\t,\r,\n]+
 %{
     private Symbol symbol(int type, Object value) {
@@ -19,6 +20,8 @@ blank_space=[ ,\t,\r,\n]+
     }
 %}
 %%
+"," {return new Symbol(sym.Comma, yytext());}
+";" {return new Symbol(sym.Semicolon, yychar, yyline, yytext());}
 String {return new Symbol(sym.STRING, yychar, yyline, yytext());}
 int {return new Symbol(sym.INT, yychar, yyline, yytext());}
 if {return new Symbol(sym.IF, yychar, yyline, yytext());}
@@ -46,9 +49,9 @@ do {return new Symbol(sym.DO, yychar, yyline, yytext());}
 "void" {return new Symbol(sym.Void, yychar, yyline, yytext());}
 "args" {return new Symbol(sym.Args, yychar, yyline, yytext());}
 "main" {return new Symbol(sym.Main, yychar, yyline, yytext());}
-";" {return new Symbol(sym.Semicolon, yychar, yyline, yytext());}
  
 {L}({L}|{D})* {return new Symbol(sym.Identifier, yychar, yyline, yytext());}
 ("(-"{D}+")")|{D}+ {return new Symbol(sym.Number, yychar, yyline, yytext());}
+{SL} {return new Symbol(sym.StringLiteral, yytext());}
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}
 

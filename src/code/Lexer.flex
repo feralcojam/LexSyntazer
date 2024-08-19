@@ -5,11 +5,14 @@ import static code.Tokens.*;
 %type Tokens
 L=[a-zA-Z_]+
 D=[0-9]+
+SL = \"([^\\\"]|\\\\[\"ntbrf])*\"
 blank_space=[ ,\t,\r,\n]+
 %{
     public String lexeme;
 %}
 %%
+"," {lexeme=yytext(); return Comma;}
+";" {lexeme=yytext(); return Semicolon;}
 String {lexeme=yytext(); return STRING;}
 int {lexeme=yytext(); return INT;}
 if {lexeme=yytext(); return IF;}
@@ -38,8 +41,8 @@ do {lexeme=yytext(); return DO;}
 "void" {lexeme=yytext(); return Void;}
 "args" {lexeme=yytext(); return Args;}
 "main" {lexeme=yytext(); return Main;}
-";" {lexeme=yytext(); return Semicolon;}
  
 {L}({L}|{D})* {lexeme=yytext(); return Identifier;}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Number;}
+{SL} {lexeme=yytext(); return StringLiteral;}
  . {return ERROR;}

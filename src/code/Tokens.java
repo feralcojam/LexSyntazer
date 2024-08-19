@@ -28,7 +28,9 @@ public enum Tokens {
     Args,
     Main,
     Semicolon,
+    Comma,
     Identifier,
     Number,
+    StringLiteral,
     ERROR
 }

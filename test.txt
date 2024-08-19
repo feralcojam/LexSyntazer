@@ -1,1 +1,5 @@
-pepita55 maincra if while potsi else
+public class Main {
+public static void main(String[] args) {
+String txt = "texto";
+}
+}

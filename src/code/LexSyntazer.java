@@ -28,7 +28,7 @@ public class LexSyntazer extends javax.swing.JFrame {
         
         String exp = (String) txt_input.getText();
         Lexer lexer = new Lexer(new StringReader(exp));
-        String result = "[" + count + "]" + "\t\tSymbol\n";
+        String result = "Line" + "\t\tSymbol\n";
         while (true) {
             Tokens token = lexer.yylex();
             if (token == null) {
@@ -118,11 +118,17 @@ public class LexSyntazer extends javax.swing.JFrame {
                 case Semicolon:
                     result += "  [Semicolon]\t" + lexer.lexeme + "\n";
                     break;
+                case Comma:
+                    result += "  [Comma]\t" + lexer.lexeme + "\n";
+                    break;
                 case Identifier:
                     result += "  [Identifier]\t\t" + lexer.lexeme + "\n";
                     break;
                 case Number:
                     result += "  [Number]\t\t" + lexer.lexeme + "\n";
+                    break;
+                case StringLiteral:
+                    result += "  [StringLiteral]\t" + lexer.lexeme + "\n";
                     break;
                 case ERROR:
                     result += "  [UndefinedSymbol]\t\t" + lexer.lexeme + "\n";
