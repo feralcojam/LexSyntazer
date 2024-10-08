@@ -32,6 +32,12 @@ do {return new Symbol(sym.DO, yychar, yyline, yytext());}
 {blank_space} {/*Ignore*/}
 "//".* {/*Ignore*/}
 "=" {return new Symbol(sym.Equal, yychar, yyline, yytext());}
+">" {return new Symbol(sym.GreaterThan, yychar, yyline, yytext());}
+">=" {return new Symbol(sym.GreaterEqualThan, yychar, yyline, yytext());}
+"<" {return new Symbol(sym.LessThan, yychar, yyline, yytext());}
+"<=" {return new Symbol(sym.LessEqualThan, yychar, yyline, yytext());}
+"++" {return new Symbol(sym.Increment, yychar, yyline, yytext());}
+"--" {return new Symbol(sym.Decrement, yychar, yyline, yytext());}
 "+" {return new Symbol(sym.Add, yychar, yyline, yytext());}
 "-" {return new Symbol(sym.Subtract, yychar, yyline, yytext());}
 "*" {return new Symbol(sym.Multiplication, yychar, yyline, yytext());}

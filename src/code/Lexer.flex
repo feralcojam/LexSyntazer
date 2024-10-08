@@ -6,7 +6,7 @@ import static code.Tokens.*;
 L=[a-zA-Z_]+
 D=[0-9]+
 SL = \"([^\\\"]|\\\\[\"ntbrf])*\"
-blank_space=[ ,\t,\r,\n]+
+blank_space=[ ,\t,\r]+
 %{
     public String lexeme;
 %}
@@ -24,6 +24,12 @@ do {lexeme=yytext(); return DO;}
 "\n" {return LineBreak;}
 "//".* {/*Ignore*/}
 "=" {lexeme=yytext(); return Equal;}
+">" {lexeme=yytext(); return GreaterThan;}
+">=" {lexeme=yytext(); return GreaterEqualThan;}
+"<" {lexeme=yytext(); return LessThan;}
+"<=" {lexeme=yytext(); return LessEqualThan;}
+"++" {lexeme=yytext(); return Increment;}
+"--" {lexeme=yytext(); return Decrement;}
 "+" {lexeme=yytext(); return Add;}
 "-" {lexeme=yytext(); return Subtract;}
 "*" {lexeme=yytext(); return Multiplication;}

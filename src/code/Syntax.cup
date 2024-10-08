@@ -16,23 +16,66 @@ parser code
 :};
 
 terminal Comma, STRING, INT, IF, ELSE, WHILE, FOR, DO, 
-    Equal, Add, Subtract, Multiplication, Division, Modulo, 
+    Equal, GreaterThan, GreaterEqualThan, LessThan, LessEqualThan,
+    Increment, Decrement,
+    Add, Subtract, Multiplication, Division, Modulo, 
     OpenParenthesis, CloseParenthesis, OpenBrace, CloseBrace, OpenBracket, 
     CloseBracket, StringLiteral,
     Public, Class, Static, Void, Args, Main, 
     Semicolon, Identifier, Number,
     ERROR;
-non terminal START, SENTENCE, DECLARATION;
+non terminal START, SENTENCE, DECLARATION, IFSTATEMENT, WHILESTATEMENT, 
+    DOSTATEMENT, OPERATOR, FORSTATEMENT, FOR_INIT, FOR_UPDATE, CONDITIONAL;
 
 start with START;
 
 START ::= Public Class Identifier OpenBrace Public Static Void Main OpenParenthesis STRING OpenBracket CloseBracket Args CloseParenthesis OpenBrace SENTENCE CloseBrace CloseBrace
 ;
 SENTENCE ::= DECLARATION Semicolon |
-    DECLARATION Semicolon SENTENCE
+    DECLARATION Semicolon SENTENCE |
+    IFSTATEMENT |
+    IFSTATEMENT SENTENCE |
+    WHILESTATEMENT |
+    WHILESTATEMENT SENTENCE |
+    DOSTATEMENT |
+    DOSTATEMENT SENTENCE |
+    FORSTATEMENT |
+    FORSTATEMENT SENTENCE
 ;
 DECLARATION ::= STRING Identifier Equal StringLiteral |
     STRING Identifier Equal StringLiteral Comma DECLARATION |
     INT Identifier Equal Number |
     INT Identifier Equal Number Comma DECLARATION
+;
+
+OPERATOR ::= Add | Subtract | Multiplication | Division
+;
+IFSTATEMENT ::= IF OpenParenthesis CONDITIONAL CloseParenthesis OpenBrace SENTENCE CloseBrace ELSE OpenBrace SENTENCE CloseBrace |
+    IF OpenParenthesis CONDITIONAL CloseParenthesis OpenBrace SENTENCE CloseBrace
+;
+WHILESTATEMENT ::= WHILE OpenParenthesis CONDITIONAL CloseParenthesis OpenBrace SENTENCE CloseBrace
+;
+DOSTATEMENT ::= DO OpenBrace SENTENCE CloseBrace WHILE OpenParenthesis CONDITIONAL CloseParenthesis Semicolon
+;
+FORSTATEMENT ::= FOR OpenParenthesis FOR_INIT Semicolon CONDITIONAL Semicolon FOR_UPDATE CloseParenthesis OpenBrace SENTENCE CloseBrace
+;
+FOR_INIT ::= INT Identifier Equal Number |
+    Identifier Equal Number
+;
+FOR_UPDATE ::= Identifier Increment |
+    Identifier Decrement |
+    Identifier Equal Identifier OPERATOR Identifier |
+    Identifier Equal Identifier OPERATOR Number
+;
+
+CONDITIONAL ::= Identifier Equal Equal StringLiteral |
+    Identifier Equal Equal Number |
+    Identifier GreaterThan StringLiteral |
+    Identifier GreaterEqualThan StringLiteral |
+    Identifier LessThan StringLiteral |
+    Identifier LessEqualThan StringLiteral |
+    Identifier GreaterThan Number |
+    Identifier GreaterEqualThan Number |
+    Identifier LessThan Number |
+    Identifier LessEqualThan Number
 ;
