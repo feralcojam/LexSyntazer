@@ -1,13 +1,18 @@
 package code;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -20,6 +25,13 @@ public class LexSyntazer extends javax.swing.JFrame {
      */
     public LexSyntazer() {
         initComponents();
+        txt_input.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "insertTab");
+        txt_input.getActionMap().put("insertTab", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txt_input.insert("    ", txt_input.getCaretPosition());
+            }
+        });
     }
 
     private void analyzeLex() throws IOException {
@@ -27,7 +39,7 @@ public class LexSyntazer extends javax.swing.JFrame {
         
         String exp = (String) txt_input.getText();
         Lexer lexer = new Lexer(new StringReader(exp));
-        String result = "Line" + "\t\tSymbol\n";
+        String result = "Line" + "\t\t\tSymbol\n";
         while (true) {
             Tokens token = lexer.yylex();
             if (token == null) {
@@ -170,18 +182,18 @@ public class LexSyntazer extends javax.swing.JFrame {
         south_panel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txt_syn_output = new javax.swing.JTextArea();
+        lex_label = new javax.swing.JLabel();
+        clear_text_btn2 = new javax.swing.JLabel();
+        scan_syn_btn = new javax.swing.JLabel();
         center_panel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_input = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_lex_output = new javax.swing.JTextArea();
-        lex_label = new javax.swing.JLabel();
         scan_lex_btn = new javax.swing.JLabel();
         clear_text_btn1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lex_label1 = new javax.swing.JLabel();
-        scan_syn_btn = new javax.swing.JLabel();
-        clear_text_btn2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -219,7 +231,7 @@ public class LexSyntazer extends javax.swing.JFrame {
             .addGroup(north_panelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(open_file_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(567, Short.MAX_VALUE))
+                .addContainerGap(836, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, north_panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(title_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -238,6 +250,7 @@ public class LexSyntazer extends javax.swing.JFrame {
 
         south_panel.setBackground(new java.awt.Color(51, 51, 51));
 
+        txt_syn_output.setEditable(false);
         txt_syn_output.setBackground(new java.awt.Color(40, 40, 40));
         txt_syn_output.setColumns(20);
         txt_syn_output.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
@@ -245,20 +258,70 @@ public class LexSyntazer extends javax.swing.JFrame {
         txt_syn_output.setRows(5);
         jScrollPane3.setViewportView(txt_syn_output);
 
+        lex_label.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lex_label.setForeground(new java.awt.Color(255, 255, 255));
+        lex_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lex_label.setText("Analyzer");
+
+        clear_text_btn2.setBackground(new java.awt.Color(51, 51, 51));
+        clear_text_btn2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        clear_text_btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clean.png"))); // NOI18N
+        clear_text_btn2.setOpaque(true);
+        clear_text_btn2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clear_text_btn2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                clear_text_btn2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                clear_text_btn2MouseExited(evt);
+            }
+        });
+
+        scan_syn_btn.setBackground(new java.awt.Color(51, 51, 51));
+        scan_syn_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scan_syn_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/analyze.png"))); // NOI18N
+        scan_syn_btn.setOpaque(true);
+        scan_syn_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scan_syn_btnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                scan_syn_btnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                scan_syn_btnMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout south_panelLayout = new javax.swing.GroupLayout(south_panel);
         south_panel.setLayout(south_panelLayout);
         south_panelLayout.setHorizontalGroup(
             south_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(south_panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+                .addGroup(south_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(south_panelLayout.createSequentialGroup()
+                        .addGap(0, 173, Short.MAX_VALUE)
+                        .addComponent(lex_label, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(scan_syn_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(clear_text_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3))
+                .addGap(11, 11, 11))
         );
         south_panelLayout.setVerticalGroup(
             south_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(south_panelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(south_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clear_text_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lex_label)
+                    .addComponent(scan_syn_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -273,16 +336,13 @@ public class LexSyntazer extends javax.swing.JFrame {
         txt_input.setRows(5);
         jScrollPane1.setViewportView(txt_input);
 
+        txt_lex_output.setEditable(false);
         txt_lex_output.setBackground(new java.awt.Color(40, 40, 40));
         txt_lex_output.setColumns(20);
         txt_lex_output.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         txt_lex_output.setForeground(new java.awt.Color(51, 153, 0));
         txt_lex_output.setRows(5);
         jScrollPane2.setViewportView(txt_lex_output);
-
-        lex_label.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lex_label.setForeground(new java.awt.Color(255, 255, 255));
-        lex_label.setText("Analyzer");
 
         scan_lex_btn.setBackground(new java.awt.Color(51, 51, 51));
         scan_lex_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -318,39 +378,8 @@ public class LexSyntazer extends javax.swing.JFrame {
 
         lex_label1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lex_label1.setForeground(new java.awt.Color(255, 255, 255));
+        lex_label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lex_label1.setText("Lexical Analyzer");
-
-        scan_syn_btn.setBackground(new java.awt.Color(51, 51, 51));
-        scan_syn_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        scan_syn_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/analyze.png"))); // NOI18N
-        scan_syn_btn.setOpaque(true);
-        scan_syn_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                scan_syn_btnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                scan_syn_btnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                scan_syn_btnMouseExited(evt);
-            }
-        });
-
-        clear_text_btn2.setBackground(new java.awt.Color(51, 51, 51));
-        clear_text_btn2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clear_text_btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clean.png"))); // NOI18N
-        clear_text_btn2.setOpaque(true);
-        clear_text_btn2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clear_text_btn2MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                clear_text_btn2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                clear_text_btn2MouseExited(evt);
-            }
-        });
 
         javax.swing.GroupLayout center_panelLayout = new javax.swing.GroupLayout(center_panel);
         center_panel.setLayout(center_panelLayout);
@@ -360,27 +389,18 @@ public class LexSyntazer extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, center_panelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lex_label)
-                        .addGap(147, 147, 147)
-                        .addComponent(scan_syn_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(clear_text_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(center_panelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, center_panelLayout.createSequentialGroup()
+                        .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                            .addComponent(lex_label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(center_panelLayout.createSequentialGroup()
                                 .addComponent(scan_lex_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(clear_text_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, center_panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lex_label1)
-                .addGap(236, 236, 236))
         );
         center_panelLayout.setVerticalGroup(
             center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,13 +417,7 @@ public class LexSyntazer extends javax.swing.JFrame {
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(center_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(scan_syn_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(clear_text_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lex_label))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         bg_panel.add(center_panel, java.awt.BorderLayout.CENTER);
